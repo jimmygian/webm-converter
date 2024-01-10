@@ -1,6 +1,5 @@
 {
   "name": "my-electron-app",
-  "productName": "Forever Audio: WEBM Converter",
   "version": "1.0.0",
   "description": "An app that converts files to WEBM format",
   "main": "src/main.js",
