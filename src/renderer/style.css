@@ -1,0 +1,138 @@
+:root {
+    --bg-body-dark: rgb(97, 90, 111);
+    --bg-body-light: rgb(242, 242, 242);
+    --text-light: rgb(26, 26, 26);
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: var(--bg-body-light);
+    color: var(--text-light);
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+
+/* Header */
+
+.header {
+    background-color: rgb(64, 59, 73, 0.1);
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+    padding: 0.5rem 0.4rem;
+}
+
+.header--side {
+    width: 10%;
+}
+
+.header--center {
+    text-align: center;
+    max-width: 70%;
+    font-size: 100%;
+}
+
+
+/* Main */
+
+.main {
+    /* background-color: brown; */
+    height: 50vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.convertForm {
+    width: 80%;
+    height: 50%;
+    /* border: 1px solid black; */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+
+}
+
+.userSelection {
+    /* border: 1px solid orange; */
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    /* padding: 0.5rem; */
+}
+
+.userSelection button {
+    width: 8rem;
+    height: 2rem;
+    /* flex-grow: 1; */
+    background-color: rgb(253, 189, 70);
+    border: 0;
+    border-radius: 7px 0px 0px 7px;
+}
+
+.userSelection input {
+    /* width: 8rem;
+    height: 2rem; */
+    flex-grow: 1;
+    border: 0;
+    box-shadow: 0px 2px 1px rgba(0, 0, 0, 0.1);
+}
+
+
+/* ============== */
+/* #tooltip {
+    display: none;
+    position: absolute;
+    background-color: rgba(51, 51, 51, 0.6); 
+    color: #ffffffb6;
+    padding: 2px;
+    border-radius: 4px;
+    z-index: 1000;
+    font-size: 10px;
+  } */
+
+
+.dragDropBox {
+    background-color: rgba(145, 145, 145, 0.3);
+    height: 10rem;
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+    /* padding: 0.5rem; */
+    margin-bottom: 2rem;
+    border-radius: 10px;
+}
+
+.dragDropBox--item {
+    border: 0;
+    /* visibility: hidden; */
+    opacity: 0;
+    /* display: none; */
+    flex-grow: 1;
+    align-self: center;
+    justify-self: center;
+    width: 100%;
+    height: 100%;
+}
+
+/* .dragDropBox:hover {
+    visibility: hidden;
+} */
+
+.dragDropBox:hover .dragDropBox--item {
+    visibility: visible;
+    opacity: 100;
+    /* display: block; */
+}
+
+.dragDropBox--item:focus, 
+.dragDropBox--item:hover {
+    visibility: visible;
+    opacity: 100;
+    background-color: rgba(255, 255, 255, 0.2);
+    /* display: block; */
+}

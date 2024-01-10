@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- This is needed for Electron Apps -->
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self'" />
+
+    <link rel="stylesheet" href="./style.css">
+    <title>Forever Audio: WEBM Converter</title>
+</head>
+<body>
+    <header class="header">
+        <div class="header--side" id="logo">FA</div>
+        <h1 class="header--center">MP4 to WEBM Converter</h1>
+        <div class="header--side"></div>
+    </header>
+    <main class="main">
+        <form class="convertForm">
+            <!-- </div>
+            <div class="userSelection">
+                <button id="inBtn">Input</button> 
+                <input type="text" id="inputPath" placeholder="Select file/folder">
+            </div> -->
+
+            <!-- Drag n Drop Area / Text -->
+            <div class="dragDropBox">    
+                <!-- Clickable divs (hidden in css file - visible only when mouse is over dragDropBox) -->
+                <button id="inFile" class="dragDropBox--item">
+                    <p>Select File</p>
+                </button>
+                <button id="inFolder" class="dragDropBox--item">
+                    <p>Select Folder</p>
+                </button>
+              </div>
+
+            <div class="userSelection">
+                <button id="outBtn">Output</button> 
+                <input type="text" id="outputPath" placeholder="Select output folder">
+            </div>
+            <button class="convertBtn" type="submit">Convert</button>
+        </form>
+        <p id="info"></p>
+    </main>
+    
+</body>
+<script src="./js/renderer.js"></script>
+</html>
