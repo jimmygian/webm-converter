@@ -20,8 +20,8 @@ const VIDEO_EXTENSIONS = [
 
 // I/O
 // const inputDir = CURRENT_DIR;
-// const inputDir = path.normalize('/Users/dimitris.giannoulis/Desktop/webv/test');
-// const outputDir = path.join(inputDir, "output");
+const inputDir = path.normalize('/Users/dimitris.giannoulis/Desktop/webv/test');
+const outputDir = path.join(inputDir, "output");
 
 
 
@@ -35,8 +35,7 @@ async function webmConvertor(dir) {
         console.log("On 'convertor.js' -> webConvertor(): Failed to Run", error)
     }
 
-    console.log(" ")
-    console.log(" ")
+    console.log("===================")
     console.log("===================")
     console.log("CONVERSION BEGUN")
     console.log("----------------")
@@ -51,10 +50,10 @@ async function webmConvertor(dir) {
             }
         })
     }
-    // console.log("CONVERSION FINISHED")
-
 
 }
+
+// webmConverter(inputDir);
 
 // ========================= //
 
@@ -75,9 +74,7 @@ async function getCommandsWebm(inputDir) {
     
                 // Create FileName with .webm file extension + output path
                 const outputFileName = file.filenameNoExt + NEW_FILE_EXT;
-                const outputFolder = path.join(file.dir, 'output');
-                fs.mkdir(outputFolder, { recursive: true });
-                const outputPath = path.join(outputFolder, outputFileName);
+                const outputPath = path.join(outputDir, outputFileName);
     
                 // Constract ffmpeg command
                 const command = createFfmpegCommand(file.absolutePath, outputPath);

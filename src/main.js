@@ -28,10 +28,14 @@ const createWindow = () => {
 
     ipcMain.handle('get-path', async (event, pathType) => {
         console.log("Get path clicked!")
-        const result = await showFolderSelectionDialog(win, pathType);
-        console.log(result)
-        webmConvertor(result.path)
-        return result;
+        try {
+            const result = await showFolderSelectionDialog(win, pathType);
+            console.log(result)
+            webmConvertor(result.path)
+            return result;
+        } catch (error) {
+            console.error("Error")
+        }
     })
 
     ipcMain.handle('ping', () => 'pong')
@@ -71,18 +75,22 @@ app.on('window-all-closed', () => {
  *  
  */
 async function showFolderSelectionDialog(window, path='openDirectory') {
-    const properties = path === 'openFile' ? ['openFile'] : ['openDirectory'];
-
-    const userPath = await dialog.showOpenDialog(window, {
-        properties: properties,
-    });
-
-    if (!userPath.canceled) {
-        const selectedPath = userPath.filePaths[0];
-        console.log("Selected Path:", selectedPath);
-        return { selected: true, path: selectedPath };
-    } else {
-        console.log("Path selection cancelled.");
-        return { canceled: true };
+    try {
+        const properties = path === 'openFile' ? ['openFile'] : ['openDirectory'];
+    
+        const userPath = await dialog.showOpenDialog(window, {
+            properties: properties,
+        });
+    
+        if (!userPath.canceled) {
+            const selectedPath = userPath.filePaths[0];
+            console.log("Selected Path:", selectedPath);
+            return { selected: true, path: selectedPath };
+        } else {
+            console.log("Path selection cancelled.");
+            return { canceled: true };
+        }
+    } catch (error) {
+        console.log("Error in showFolderSelectionDialog()")
     }
 }
