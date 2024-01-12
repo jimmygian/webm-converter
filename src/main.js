@@ -1,10 +1,18 @@
-console.log("Hello from Electron!!");
 
 const { app, BrowserWindow, ipcMain, dialog, Menu } = require('electron');
 const path = require('node:path');
+const paths = require('./utils/paths');
 
-const INDEX = path.join(__dirname, 'renderer', 'index.html');
-const PRELOADPATH = path.join(__dirname, 'preload.js');
+
+console.log("\n\n--------------------------------")
+console.log("Hello from Electron - main.js!!");
+console.log("App Path:", app.getAppPath());
+console.log("__dirname:", __dirname);
+console.log("cwd:", process.cwd());
+console.log("--------------------------------\n\n")
+
+
+
 const isDev = true;
 
 const webmConvertor = require('./backend/convertor');
@@ -18,7 +26,7 @@ const createWindow = () => {
         webPreferences: {
             contextIsolation: true,
             nodeIntegration: true,
-            preload: PRELOADPATH
+            preload: paths.PRELOADPATH
         }
     });
 
@@ -30,18 +38,22 @@ const createWindow = () => {
         console.log("Get path clicked!")
         try {
             const result = await showFolderSelectionDialog(win, pathType);
-            console.log(result)
-            webmConvertor(result.path)
             return result;
         } catch (error) {
             console.error("Error")
         }
     })
 
+    ipcMain.on('start-operation', (event, data) => {
+        console.log("\nDATA RECEIVED: ", data, "\n");
+        // console.log("\nEVENT RECEIVED: ", event, "\n");
+        webmConvertor(data);
+    })
+
     ipcMain.handle('ping', () => 'pong')
 
     win.setMinimumSize(500, 900);
-    win.loadFile(INDEX);
+    win.loadFile(paths.INDEX);
 }
 
 

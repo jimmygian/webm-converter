@@ -18,11 +18,13 @@ contextBridge.exposeInMainWorld('path', {
     relative: (abPath, target) => path.relative(abPath, target),
     dirname: (abPath) => path.dirname(abPath),
     basename: (abPath) => path.normalize(abPath),
+    sep: (abPath) => abPath.split(path.sep),
     cwd: process.cwd() // Expose current working dir
 });
 
 contextBridge.exposeInMainWorld('ipcRenderer', {
     ping: () => ipcRenderer.invoke('ping'),
     getDir: () => ipcRenderer.invoke('get-path', 'openDirectory'),
-    getFile: () => ipcRenderer.invoke('get-path', 'openFile')
+    getFile: () => ipcRenderer.invoke('get-path', 'openFile'),
+    startOperation: (data) => ipcRenderer.send('start-operation', data)
 });

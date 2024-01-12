@@ -2,6 +2,17 @@
     --bg-body-dark: rgb(97, 90, 111);
     --bg-body-light: rgb(242, 242, 242);
     --text-light: rgb(26, 26, 26);
+    --orange: rgb(253, 189, 70);
+}
+
+
+button:hover,
+button:focus {
+    opacity: 80%;
+    cursor: pointer;
+}
+button:active {
+    background-color: bisque;
 }
 
 body {
@@ -61,6 +72,7 @@ body {
     /* border: 1px solid orange; */
     width: 100%;
     display: flex;
+    /* flex-direction: column; */
     justify-content: space-between;
     /* padding: 0.5rem; */
 }
@@ -69,7 +81,7 @@ body {
     width: 8rem;
     height: 2rem;
     /* flex-grow: 1; */
-    background-color: rgb(253, 189, 70);
+    background-color: var(--orange);
     border: 0;
     border-radius: 7px 0px 0px 7px;
 }
@@ -81,7 +93,6 @@ body {
     border: 0;
     box-shadow: 0px 2px 1px rgba(0, 0, 0, 0.1);
 }
-
 
 /* ============== */
 /* #tooltip {
@@ -101,6 +112,7 @@ body {
     height: 10rem;
     width: 100%;
     display: flex;
+    flex-direction: column;
     justify-content: space-evenly;
     /* padding: 0.5rem; */
     margin-bottom: 2rem;
@@ -126,7 +138,6 @@ body {
 .dragDropBox:hover .dragDropBox--item {
     visibility: visible;
     opacity: 100;
-    /* display: block; */
 }
 
 .dragDropBox--item:focus, 
@@ -134,5 +145,27 @@ body {
     visibility: visible;
     opacity: 100;
     background-color: rgba(255, 255, 255, 0.2);
-    /* display: block; */
+}
+
+.dragDropBox--input {
+    flex-grow: 1;
+    padding: 0.25rem;
+    border: 0;
+    box-shadow: 0px 2px 1px rgba(0, 0, 0, 0.1);
+    border-radius: 0px 0px 5px 5px ;
+}
+
+
+/* BUTTON */
+
+.convertBtn {
+    padding: 0.5rem 2rem;
+    margin: 1rem;
+    margin-top: 3rem;
+    border: 0;
+    border-radius: 5px;
+    background-color: var(--orange);
+    color: var(--text-light);
+    letter-spacing: 0.1rem;
+    font-weight: 100;
 }

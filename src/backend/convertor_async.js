@@ -5,8 +5,9 @@ const execPromise = promisify(exec);
 const fs = require('fs').promises;
 const path = require('path');
 
+const paths = require('../utils/paths.js')
+
 // Constants
-const CURRENT_DIR = path.normalize(process.cwd());
 const NEW_FILE_EXT = '.webm';
 const VIDEO_EXTENSIONS = [
     '.mp4',
@@ -20,8 +21,8 @@ const VIDEO_EXTENSIONS = [
 
 // I/O
 // const inputDir = CURRENT_DIR;
-const inputDir = path.normalize('/Users/dimitris.giannoulis/Desktop/webv/test');
-const outputDir = path.join(inputDir, "output");
+// const inputDir = path.normalize('/Users/dimitris.giannoulis/Desktop/webv/test');
+// const outputDir = path.join(inputDir, "output");
 
 
 
@@ -35,25 +36,37 @@ async function webmConvertor(dir) {
         console.log("On 'convertor.js' -> webConvertor(): Failed to Run", error)
     }
 
-    console.log("===================")
+    console.log(" ")
+    console.log(" ")
     console.log("===================")
     console.log("CONVERSION BEGUN")
     console.log("----------------")
 
     for (const command of commandsArr) {
         console.log(`Converting '${command.file}'...`)
-        exec(command.command, (error, stdout, stderr) => {
-            if (error) {
-                console.error(`  >> !! Error converting '${command.name}'.`);
-            } else {
-                console.log(`  >> Successfully converted '${command.name}'.`)
-            }
-        })
+        // exec(command.command, (error, stdout, stderr) => {
+        //     if (error) {
+        //         console.error(`  >> !! Error converting '${command.name}'.`);
+        //     } else {
+        //         console.log(`  >> Successfully converted '${command.name}'.`, error)
+        //     }
+        // })
+        execCommand(command.command, command.name);
     }
-
+    // console.log("CONVERSION FINISHED")
 }
 
-// webmConverter(inputDir);
+function execCommand (command, name) {
+    return new Promise((resovle,reject) => {
+        exec(command, (error, stdout, stderr) => {
+            if (error) {
+                console.error(`  >> !! Error converting '${name}'.`);
+            } else {
+                console.log(`  >> Successfully converted '${name}'.`, error)
+            }
+        })
+    })
+}
 
 // ========================= //
 
@@ -74,7 +87,9 @@ async function getCommandsWebm(inputDir) {
     
                 // Create FileName with .webm file extension + output path
                 const outputFileName = file.filenameNoExt + NEW_FILE_EXT;
-                const outputPath = path.join(outputDir, outputFileName);
+                const outputFolder = path.join(file.dir, 'output');
+                fs.mkdir(outputFolder, { recursive: true });
+                const outputPath = path.join(outputFolder, outputFileName);
     
                 // Constract ffmpeg command
                 const command = createFfmpegCommand(file.absolutePath, outputPath);
@@ -91,7 +106,7 @@ async function getCommandsWebm(inputDir) {
 
 function createFfmpegCommand(input, output) {
     // const cmd = [];
-    const ffmpegCall = `ffmpeg -y -i`
+    const ffmpegCall = `${paths.FFMPEG_EXEC} -y -i`
     const quality = `-deadline best` // good, best, realtime
     const videoCodec = `-c:v libvpx-vp9` // Uses VP9 as a video codec 
     const audioCodec =  `-c:a libopus` // Uses OPUS for audio codec

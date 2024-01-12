@@ -25,21 +25,22 @@
             </div> -->
 
             <!-- Drag n Drop Area / Text -->
-            <div class="dragDropBox">    
+            <div class="dragDropBox">
                 <!-- Clickable divs (hidden in css file - visible only when mouse is over dragDropBox) -->
-                <button id="inFile" class="dragDropBox--item">
+                <button id="inFileBtn" class="dragDropBox--item">
                     <p>Select File</p>
                 </button>
-                <button id="inFolder" class="dragDropBox--item">
+                <button id="inFolderBtn" class="dragDropBox--item">
                     <p>Select Folder</p>
                 </button>
-              </div>
+                <input readonly type="text" class="dragDropBox--input" id="inputPath" placeholder=" Select Input folder">
+            </div>
 
             <div class="userSelection">
                 <button id="outBtn">Output</button> 
-                <input type="text" id="outputPath" placeholder="Select output folder">
+                <input readonly type="text" id="outputPath" placeholder=" Same as input">
             </div>
-            <button class="convertBtn" type="submit">Convert</button>
+            <button class="convertBtn" type="submit">CONVERT</button>
         </form>
         <p id="info"></p>
     </main>

@@ -1,3 +1,8 @@
+# Program Specific
+exec
+ffmpeg
+ffmpeg.exe
+
 # Logs
 logs
 *.log
