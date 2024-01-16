@@ -1,9 +1,11 @@
 // const { exec } = require('child_process');
 const { exec } = require('child_process');
+const { spawn } = require('child_process');
 const { promisify } = require('util');
 const execPromise = promisify(exec);
 const fs = require('fs');
 const path = require('path');
+const { app, ipcMain } = require('electron');
 
 const paths = require('../utils/paths.js')
 
@@ -37,15 +39,56 @@ async function webmConvertor({ input, output, isFolder }) {
 
 async function runCommands(commands) {
     for (const c of commands) {
-        try {
-            console.log(`Running conversion for: '${c.file}' . .`);
-            const { stdout, stderr } = await execPromise(c.command);
+
+        console.log(`Running conversion for: '${c.file}' . .`);
+        const { stdout, stderr } = await execPromise(c.command);
+        if (stdout) {
+            console.log(stdout)
             console.log(`  >> File converted.`);
-        } catch (error) {
-            console.error("  >> !! Error executing command.", error.message);
+        } else {
+            console.log(stderr)
         }
+
     }
 }
+
+
+// //  WITH SPAWN
+
+// function webmConvertor({ input, output, isFolder }) {
+//     let commandsArr = getCommandsWebm(input, output);
+
+//     console.log("\n\n\n===================")
+//     console.log("CONVERSION BEGUN\n")
+//     console.log("----------------")
+    
+//     runCommands(commandsArr);
+
+//     console.log("\nCONVERSION FINISHED")
+//     console.log("===================\n\n\n")
+// }
+
+// function runCommands(commands) {
+//     for (const c of commands) {
+
+//         console.log(`Running conversion for: '${c.file}' . .`);
+//         const ffmpegCmd = paths.FFMPEG_EXEC;
+
+//         const ffmpegProcess = spawn(ffmpegCmd, [...c.command]);
+//         console.log(ffmpegCmd, [...c.command])
+
+//         ffmpegProcess.stdout.on('data', (data) => {
+//             console.log(`ffmpeg stdout: ${data}`)
+//         })
+//         ffmpegProcess.stderr.on('data', (data) => {
+//             console.error(`ffmpeg stderr: ${data}`)
+//         })
+//         ffmpegProcess.on('close', (code) => {
+//             console.log(`ffmpeg process exited with code ${code}`)
+//         })
+//     }
+// }
+
 
 // ========================= //
 
@@ -84,15 +127,22 @@ function getCommandsWebm(inputDir, outputDir="") {
 
 
 function createFfmpegCommand(input, output) {
-    // const cmd = [];
-    const ffmpegCall = `${paths.FFMPEG_EXEC} -y -i`
+    const ffmpegCall = `"${paths.FFMPEG_EXEC}" -y -i`
+    // const ffmpegCall = `"${ffmpegPath}" -y -i`
+
     const quality = `-deadline best` // good, best, realtime
     const videoCodec = `-c:v libvpx-vp9` // Uses VP9 as a video codec 
     const audioCodec =  `-c:a libopus` // Uses OPUS for audio codec
-    cmd = [ffmpegCall, input, quality, videoCodec, audioCodec, output];
+    cmd = [input, videoCodec, audioCodec, output];
     const command = `${ffmpegCall} "${input}" ${videoCodec} ${audioCodec} "${output}"`
     // const command = ...cmd;
     return command;
+
+    // const quality = `-deadline best` // good, best, realtime
+    // const videoCodec = `-c:v libvpx-vp9` // Uses VP9 as a video codec 
+    // const audioCodec =  `-c:a libopus` // Uses OPUS for audio codec
+    // cmd = [input, videoCodec, audioCodec, output];
+    // return cmd;
 }
 
 
@@ -122,6 +172,7 @@ function getPathInfoArr(userPath) {
         }
         
     } catch (error) {
+        ipcMain.handle('get-message', () => error);
         throw new Error(`On 'convertor.js' -> getPathInfoArr(): Failed to get directory stats for path '${userPath}'`, error)
     }
 }

@@ -26,5 +26,7 @@ contextBridge.exposeInMainWorld('ipcRenderer', {
     ping: () => ipcRenderer.invoke('ping'),
     getDir: () => ipcRenderer.invoke('get-path', 'openDirectory'),
     getFile: () => ipcRenderer.invoke('get-path', 'openFile'),
-    startOperation: (data) => ipcRenderer.send('start-operation', data)
+    startOperation: (data) => ipcRenderer.send('start-operation', data),
+    getConsoleMessage: (func) => ipcRenderer.on('console-message', (event, consoleMessage) => func(event, consoleMessage)),
+    opStarted: (func) => ipcRenderer.on('op-started', (event, ...args) => func(event,...args))
 });

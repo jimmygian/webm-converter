@@ -1,15 +1,26 @@
 {
-  "name": "my-electron-app",
+  "name": "fa-webm-convertor",
   "version": "1.0.0",
+  "license": "MIT",
   "description": "An app that converts files to WEBM format",
-  "main": "src/main.js",
+  "author": "Dimitris Giannoulis",
+  "main": "./src/main.js",
   "scripts": {
     "start": "electron .",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "package": "electron-builder"
   },
-  "author": "Dimitris Giannoulis",
-  "license": "MIT",
   "devDependencies": {
-    "electron": "^28.1.1"
+    "electron": "^28.1.3",
+    "electron-builder": "^24.9.1"
+  },
+  "build": {
+    "files": [
+      "src/**/*"
+    ],
+    "appId": "com.example.fa-webm-convertor",
+    "mac": {
+      "category": "public.app-category.video",
+      "target": ["dmg"]
+    }
   }
 }

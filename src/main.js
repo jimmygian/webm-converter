@@ -3,22 +3,20 @@ const { app, BrowserWindow, ipcMain, dialog, Menu } = require('electron');
 const path = require('node:path');
 const paths = require('./utils/paths');
 
-
-console.log("\n\n--------------------------------")
-console.log("Hello from Electron - main.js!!");
-console.log("App Path:", app.getAppPath());
-console.log("__dirname:", __dirname);
-console.log("cwd:", process.cwd());
-console.log("--------------------------------\n\n")
-
-
-
 const isDev = true;
+let mainWindow;
+
+// console.log("\n\n--------------------------------")
+// console.log("Hello from Electron - main.js!!");
+// console.log("App Path:", app.getAppPath());
+// console.log("__dirname:", __dirname);
+// console.log("cwd:", process.cwd());
+// console.log("--------------------------------\n\n")
 
 const webmConvertor = require('./backend/convertor');
 
 const createWindow = () => {
-    const win = new BrowserWindow({
+    mainWindow = new BrowserWindow({
         // Basic Configurations
         title: 'Main Window',
         width: isDev ? 1000 : 580,
@@ -30,14 +28,40 @@ const createWindow = () => {
         }
     });
 
-    if (isDev) {
-        win.webContents.openDevTools();
+
+    // Redirect console.log / console.error to renderer process
+    const originalLog = console.log;
+    const originalError = console.error;
+
+    console.log = function (...args) {
+        // Call the original console.log
+        originalLog.apply(console, args);
+
+        // Send logs to the renderer process
+        if (mainWindow && mainWindow.webContents) {
+            mainWindow.webContents.send('console-message', { type: 'log', message: args.join(' ') })
+        }
     }
+    console.error = function (...args) {
+        // Call the original console.log
+        originalError.apply(console, args);
+
+        // Send logs to the renderer process
+        if (mainWindow && mainWindow.webContents) {
+            mainWindow.webContents.send('console-message', { type: 'error', message: args.join(' ') })
+        }
+    }
+
+
+    if (isDev) {
+        mainWindow.webContents.openDevTools();
+    }
+
 
     ipcMain.handle('get-path', async (event, pathType) => {
         console.log("Get path clicked!")
         try {
-            const result = await showFolderSelectionDialog(win, pathType);
+            const result = await showFolderSelectionDialog(mainWindow, pathType);
             return result;
         } catch (error) {
             console.error("Error")
@@ -45,15 +69,34 @@ const createWindow = () => {
     })
 
     ipcMain.on('start-operation', (event, data) => {
+        
+        // // Redirect console.log / console.error to renderer process
+        // const originalLog = console.log;
+        // const originalError = console.error;
+
+        // console.log = function (...args) {
+        //     originalLog.apply(console, args);
+        //     event.sender.send('console-message', { type: 'log', message: args.join(' ') })
+        // }
+        // console.error = function (...args) {
+        //     originalError.apply(console, args);
+        //     event.sender.send('console-message', { type: 'error', message: args.join(' ') })
+        // }
+
         console.log("\nDATA RECEIVED: ", data, "\n");
         // console.log("\nEVENT RECEIVED: ", event, "\n");
-        webmConvertor(data);
+        event.sender.send('op-started', "Conversion Started!");
+        try {
+            webmConvertor(data);
+        } catch (error) {
+            console.error(error)
+        }
     })
 
     ipcMain.handle('ping', () => 'pong')
 
-    win.setMinimumSize(500, 900);
-    win.loadFile(paths.INDEX);
+    mainWindow.setMinimumSize(500, 900);
+    mainWindow.loadFile(paths.INDEX);
 }
 
 
@@ -106,3 +149,32 @@ async function showFolderSelectionDialog(window, path='openDirectory') {
         console.log("Error in showFolderSelectionDialog()")
     }
 }
+
+
+
+// // CONSOLE LOGS
+// const originalLog = console.log
+// const originalErr = console.error
+
+// // Override console.log with a wrapper function
+// console.log = function (...args) {
+//     // Call the original console.log
+//     process.stdout.write(...args);
+
+//     // Send logs to the renderer process
+//     if (mainWindow && mainWindow.webContents) {
+//         mainWindow.webContents.send('console-message', { type: 'log', message: args.join(' ') })
+//     }
+// }
+// // Override console.error with a wrapper function
+// console.error = function (...args) {
+//     // Call the original console.error
+//     process.stdout.write(...args);
+
+//     // Send logs to the renderer process
+//     if (mainWindow && mainWindow.webContents) {
+//         mainWindow.webContents.send('console-message', { type: 'error', message: args.join(' ') })
+//     }
+// }
+
+

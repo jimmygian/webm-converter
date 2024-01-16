@@ -1,6 +1,10 @@
+console.log("Hello from Renderer - in console")
+
+
 // SELECTORS
 const inputPathEl = document.querySelector("#inputPath");
 const outputPathEl = document.querySelector("#outputPath");
+const submitBtn = document.querySelector(".convertForm");
 
 // STATE
 const state = {
@@ -32,25 +36,21 @@ document.querySelector('#inFileBtn').addEventListener('click', async (event) => 
 
 document.querySelector('#outBtn').addEventListener('click', async (event) => {
     event.preventDefault();
-
+    document.querySelector('#outBtn').removeEventListener
     console.log("Clicked Output Btn.");
     await updatePath("outFolder");
     console.log(state);
     updatePage();
 })
 
-document.querySelector(".convertForm").addEventListener('submit', (event) => {
+submitBtn.addEventListener('submit', function handleStartOp(event) {
     event.preventDefault();
+    console.log("RAN")
 
     ipcRenderer.startOperation(state);
-
-    // // EVALUATE
-    // if (state.input === undefined || state.output === undefined) {
-    //     console.log("Please select valid inputs/outputs.")
-    // } else {
-    //     console.log("congrats!")
-    //     console.log("This will be submitted\n", state);
-    // }
+    
+    // submitBtn.removeEventListener('submit', handleStartOp);
+    // submitBtn.addEventListener('submit', handleStartOp);
 })
 
 
@@ -103,3 +103,15 @@ function updatePage() {
     inputPathEl.value = state.input;
     outputPathEl.value = state.output;
 }
+
+
+// main.js listeners
+
+ipcRenderer.opStarted((event, data) => {
+    console.log("EVENT:\n", event, "\n\n")
+    console.log("DATA:\n", data, "\n\n")
+})
+
+ipcRenderer.getConsoleMessage((event, consoleMessage) => {
+    console.log(consoleMessage.message);
+})
