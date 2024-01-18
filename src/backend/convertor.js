@@ -1,8 +1,8 @@
 // const { exec } = require('child_process');
-const { exec } = require('child_process');
-const { spawn } = require('child_process');
+const { spawn } = require('node:child_process');
 const { promisify } = require('util');
-const execPromise = promisify(exec);
+const spawnPromise = promisify(spawn);
+// const execPromise = promisify(exec);
 const fs = require('fs');
 const path = require('path');
 const { app, ipcMain } = require('electron');
@@ -24,131 +24,81 @@ const VIDEO_EXTENSIONS = [
 
 // ===== MAIN FUNCTION ===== //
 
-async function webmConvertor({ input, output, isFolder }) {
-    let commandsArr = getCommandsWebm(input, output);
+function webmConvertor({ input, output, isFolder }) {
+    console.log("BELOW")
+    console.log(paths)
+    console.log("getAppPath from convertor.js:", app.getAppPath())
+    const inputArr = createPathInfoArr(input);
 
+    let outputPath = output;
+    if (!output) {
+        outputPath = path.join(inputArr[0].dir, 'output');
+        fs.mkdirSync(outputPath, { recursive: true });
+    }
+
+    console.log("PATHS from convertor.js:", paths)
     console.log("\n\n\n===================")
     console.log("CONVERSION BEGUN\n")
     console.log("----------------")
-    
-    await runCommands(commandsArr);
+
+    for (let pathInfo of inputArr) {
+        executeFfmpegCmd(pathInfo, outputPath)
+    }
 
     console.log("\nCONVERSION FINISHED")
     console.log("===================\n\n\n")
 }
 
-async function runCommands(commands) {
-    for (const c of commands) {
 
-        console.log(`Running conversion for: '${c.file}' . .`);
-        const { stdout, stderr } = await execPromise(c.command);
-        if (stdout) {
-            console.log(stdout)
-            console.log(`  >> File converted.`);
-        } else {
-            console.log(stderr)
-        }
+// WITH SPAWN
 
-    }
-}
-
-
-// //  WITH SPAWN
-
-// function webmConvertor({ input, output, isFolder }) {
-//     let commandsArr = getCommandsWebm(input, output);
-
-//     console.log("\n\n\n===================")
-//     console.log("CONVERSION BEGUN\n")
-//     console.log("----------------")
+function executeFfmpegCmd(pathInfo, outputPath) {
+    console.log(`Running conversion for: '${pathInfo.filename}' . .`);
     
-//     runCommands(commandsArr);
+    // Store Command exec
+    const ffmpegCmd = paths.FFMPEG_EXEC;
+    // const ffmpegCmd = "ffmpeg"    
 
-//     console.log("\nCONVERSION FINISHED")
-//     console.log("===================\n\n\n")
-// }
+    // Store arguments
+    const args = [];
+    args.push(`-i`);
+    args.push(`${pathInfo.absolutePath}`);
+    // args.push(`-deadline`, `best`); /* good, best, realtime */ 
+    args.push(`-c:v`, `libvpx-vp9`); // Uses VP9 as a video codec 
+    args.push(`-c:a`, `libopus`); // Uses OPUS for audio codec */
+    args.push(`-y`); /* Overwrites existing files without causing ffmpeg to crush */
+    
+    const outputFilename = `${pathInfo.filenameNoExt}.webm`;
+    const absOutputPath = path.join(outputPath, outputFilename);
+    args.push(absOutputPath);
 
-// function runCommands(commands) {
-//     for (const c of commands) {
+    // Run command
+    const ffmpegProcess = spawn(ffmpegCmd, args);
+    // const ffmpegProcess = spawn(ffmpegCmd, args, { stdio: 'inherit'});
+    // console.log(spawn(ffmpegCmd, args));
+    // console.log(ffmpegCmd, args)
 
-//         console.log(`Running conversion for: '${c.file}' . .`);
-//         const ffmpegCmd = paths.FFMPEG_EXEC;
-
-//         const ffmpegProcess = spawn(ffmpegCmd, [...c.command]);
-//         console.log(ffmpegCmd, [...c.command])
-
-//         ffmpegProcess.stdout.on('data', (data) => {
-//             console.log(`ffmpeg stdout: ${data}`)
-//         })
-//         ffmpegProcess.stderr.on('data', (data) => {
-//             console.error(`ffmpeg stderr: ${data}`)
-//         })
-//         ffmpegProcess.on('close', (code) => {
-//             console.log(`ffmpeg process exited with code ${code}`)
-//         })
-//     }
-// }
+    // Log data
+    ffmpegProcess.stdout.on('data', (data) => {
+        console.log(`  >> File converted.`);
+        console.log(`ffmpeg stdout: ${data}`)
+    })
+    ffmpegProcess.stderr.on('data', (data) => {
+        console.error(`ffmpeg stderr: ${data}`)
+    })
+    ffmpegProcess.on('close', (code) => {
+        console.log(`ffmpeg process exited with code ${code}`)
+    })
+}
 
 
 // ========================= //
 
 
-
-// HELPER FUNCTIONS
-
-function getCommandsWebm(inputDir, outputDir="") {
-    const commands = [];
-    const dirFiles = getPathInfoArr(inputDir);
-
-    let outputFolder;
-    if (outputDir === "") {
-        // Make New Output Folder
-        outputFolder = path.join(inputDir, 'output');
-        fs.mkdirSync(outputFolder, { recursive: true });
-        console.log("No output folder specified. Creating..")
-    } else {
-        outputFolder = outputDir;
-    }
-
-    dirFiles.forEach(file => {
-        if (VIDEO_EXTENSIONS.includes(file.ext)) {
-
-            // Create FileName with .webm file extension + output path
-            const outputFileName = file.filenameNoExt + NEW_FILE_EXT;
-      
-            // Constract ffmpeg command
-            const outputPath = path.join(outputFolder, outputFileName);
-            const command = createFfmpegCommand(file.absolutePath, outputPath);
-            commands.push({file: file.filename, command: command})
-        }
-    })
-    return commands;
-}
-
-
-function createFfmpegCommand(input, output) {
-    const ffmpegCall = `"${paths.FFMPEG_EXEC}" -y -i`
-    // const ffmpegCall = `"${ffmpegPath}" -y -i`
-
-    const quality = `-deadline best` // good, best, realtime
-    const videoCodec = `-c:v libvpx-vp9` // Uses VP9 as a video codec 
-    const audioCodec =  `-c:a libopus` // Uses OPUS for audio codec
-    cmd = [input, videoCodec, audioCodec, output];
-    const command = `${ffmpegCall} "${input}" ${videoCodec} ${audioCodec} "${output}"`
-    // const command = ...cmd;
-    return command;
-
-    // const quality = `-deadline best` // good, best, realtime
-    // const videoCodec = `-c:v libvpx-vp9` // Uses VP9 as a video codec 
-    // const audioCodec =  `-c:a libopus` // Uses OPUS for audio codec
-    // cmd = [input, videoCodec, audioCodec, output];
-    // return cmd;
-}
-
-
 // I/O FUNCTIONS
 
-function getPathInfoArr(userPath) {
+// Creates an arr of objects that contain path Info for all path's files
+function createPathInfoArr(userPath) {
     const arr = [];
     
     try {
@@ -158,7 +108,7 @@ function getPathInfoArr(userPath) {
             // Handle File Path
             const obj = getPathInfo(userPath);
             arr.push(obj);
-            // console.log("getPathInfoArr(file) returned:", arr)
+            // console.log("createPathInfoArr(file) returned:", arr)
             return arr;
         } else {
             // Handle Dir Path
@@ -167,19 +117,20 @@ function getPathInfoArr(userPath) {
                 const obj = getPathInfo(userPath, fileName);
                 arr.push(obj);
             })
-            // console.log("getPathInfoArr(userPath) returned:", arr)
+            // console.log("createPathInfoArr(userPath) returned:", arr)
             return arr;
         }
         
     } catch (error) {
         ipcMain.handle('get-message', () => error);
-        throw new Error(`On 'convertor.js' -> getPathInfoArr(): Failed to get directory stats for path '${userPath}'`, error)
+        throw new Error(`On 'convertor.js' -> createPathInfoArr(): Failed to get directory stats for path '${userPath}'`, error)
     }
 }
 
-
+// Accepts 1 absolute path - returns an object of path related info
 function getPathInfo(userPath, fileName=null) {
-
+    
+    // Nested function - constructs object that contains path info
     function createObj(inputPath) {
         // Check if path is absolute
         const absolutePath = path.resolve(inputPath);
@@ -200,6 +151,7 @@ function getPathInfo(userPath, fileName=null) {
         return fileInfo;
     }
 
+    // Main function, has to pass file path to createObj()
     let pathInfo;
     if (fileName !== null) {
         pathInfo = createObj(path.join(userPath, fileName));

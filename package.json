@@ -15,12 +15,20 @@
   },
   "build": {
     "files": [
-      "src/**/*"
+      "**/*"
+    ],
+    "extraFiles": [
+      {
+        "from": "src/backend/exec/ffmpeg",
+        "to": "ffmpeg"
+      }
     ],
     "appId": "com.example.fa-webm-convertor",
     "mac": {
       "category": "public.app-category.video",
-      "target": ["dmg"]
+      "target": [
+        "dmg"
+      ]
     }
   }
 }

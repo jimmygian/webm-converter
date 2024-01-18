@@ -2,6 +2,7 @@
 const { app, BrowserWindow, ipcMain, dialog, Menu } = require('electron');
 const path = require('node:path');
 const paths = require('./utils/paths');
+const fs = require('fs');
 
 const isDev = true;
 let mainWindow;
@@ -70,18 +71,14 @@ const createWindow = () => {
 
     ipcMain.on('start-operation', (event, data) => {
         
-        // // Redirect console.log / console.error to renderer process
-        // const originalLog = console.log;
-        // const originalError = console.error;
+        console.log("PATHS FFMPEG EXEC:", paths.FFMPEG_EXEC)
+        console.log("PATHS PRELOAD:", paths.PRELOADPATH)
+        console.log("app.getAppPath() main.js:", app.getAppPath())
+        console.log("app.getAppPath() paths.js:", paths.appPath)
 
-        // console.log = function (...args) {
-        //     originalLog.apply(console, args);
-        //     event.sender.send('console-message', { type: 'log', message: args.join(' ') })
-        // }
-        // console.error = function (...args) {
-        //     originalError.apply(console, args);
-        //     event.sender.send('console-message', { type: 'error', message: args.join(' ') })
-        // }
+        fs.access(paths.FFMPEG_EXEC, fs.constants.X_OK, (err) => {
+            console.log('ffmpegPath has execute permission:', !err)
+        });
 
         console.log("\nDATA RECEIVED: ", data, "\n");
         // console.log("\nEVENT RECEIVED: ", event, "\n");

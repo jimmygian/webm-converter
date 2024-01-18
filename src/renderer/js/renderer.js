@@ -115,3 +115,4 @@ ipcRenderer.opStarted((event, data) => {
 ipcRenderer.getConsoleMessage((event, consoleMessage) => {
     console.log(consoleMessage.message);
 })
+
