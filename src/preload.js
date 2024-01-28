@@ -24,6 +24,7 @@ contextBridge.exposeInMainWorld('path', {
 
 contextBridge.exposeInMainWorld('ipcRenderer', {
     ping: () => ipcRenderer.invoke('ping'),
+    getMessage: () => ipcRenderer.invoke('get-message'),
     getDir: () => ipcRenderer.invoke('get-path', 'openDirectory'),
     getFile: () => ipcRenderer.invoke('get-path', 'openFile'),
     startOperation: (data) => ipcRenderer.send('start-operation', data),
