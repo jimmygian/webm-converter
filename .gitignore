@@ -2,6 +2,7 @@
 exec
 ffmpeg
 ffmpeg.exe
+dist
 
 # Logs
 logs

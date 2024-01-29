@@ -19,8 +19,25 @@
     ],
     "extraFiles": [
       {
-        "from": "src/backend/exec/ffmpeg",
-        "to": "ffmpeg"
+        "from": "src/backend/exec/win/ffmpeg.exe",
+        "to": "ffmpeg.exe",
+        "filter": [
+          "win"
+        ]
+      },
+      {
+        "from": "src/backend/exec/mac/ffmpeg",
+        "to": "ffmpeg",
+        "filter": [
+          "mac"
+        ]
+      },
+      {
+        "from": "src/backend/exec/linux/ffmpeg",
+        "to": "ffmpeg",
+        "filter": [
+          "linux"
+        ]
       }
     ],
     "appId": "com.example.fa-webm-convertor",
@@ -28,7 +45,14 @@
       "category": "public.app-category.video",
       "target": [
         "dmg"
-      ]
+      ],
+      "icon": "images/icons/FA_webm.icns"
+    },
+    "win": {
+      "target": [
+        "msi"
+      ],
+      "icon": "images/icons/FA_webm.ico"
     }
   }
 }
