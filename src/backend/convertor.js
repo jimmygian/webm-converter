@@ -4,6 +4,7 @@
  * convert files.
  */
 
+
 const { spawn, ChildProcess } = require('node:child_process');
 const fs = require('fs');
 const path = require('path');
@@ -27,9 +28,9 @@ async function webmConvertor({ input, output, isFolder }) {
     }
 
     // LOGS 'Conversion started' message to the UI
-    console.log("\n\n\n===================")
-    console.log("CONVERSION BEGUN\n")
-    console.log("----------------")
+    // console.log("===================")
+    console.log("CONVERSION STARTED\n")
+    // console.log("------------------------")
 
     for (let pathInfo of inputArr) {
         try {
@@ -57,7 +58,7 @@ async function webmConvertor({ input, output, isFolder }) {
 
 // FFMPEG COMMAND FUNCTION
 async function executeFfmpegCmd(pathInfo, outputPath) {
-    console.log(`Running conversion for: '${pathInfo.filename}' . .`);
+    console.log(`Running conversion for: '${pathInfo.filename}'.. \n`);
     
     // Store Command exec
     const ffmpegCmd = paths.FFMPEG_EXEC;
@@ -65,15 +66,36 @@ async function executeFfmpegCmd(pathInfo, outputPath) {
 
     // Store arguments
     const args = [];
+    // STAYS THE SAME
     args.push(`-i`);
     args.push(`${pathInfo.absolutePath}`);
-    // args.push(`-deadline`, `best`);     /* good, best, realtime */ 
-    args.push(`-c:v`, `libvpx-vp9`);    /* Uses VP9 as a video codec */
-    args.push(`-c:a`, `libopus`);       /* Uses OPUS for audio codec */
     args.push(`-y`);                    /* Overwrites existing files without causing ffmpeg to crush */
     
-    // Create and store output name
+    // VIDEO TO WEBM CONV
+    args.push(`-deadline`, `best`);     /* good, best, realtime */ 
+    args.push(`-c:v`, `libvpx-vp9`);    /* Uses VP9 as a video codec */
+    args.push(`-c:a`, `libopus`);       /* Uses OPUS for audio codec */
     const outputFilename = `${pathInfo.filenameNoExt}.webm`;
+    
+    // MOV TO WAV CONV 
+    // args.push(`-filter_complex`, `[0:a:0][0:a:1]amerge=inputs=2[a]`);
+    // args.push(`-map`, `[a]`);     
+    // args.push(`-c:a`, `pcm_s24le`);     
+    // const outputFilename = `${pathInfo.filenameNoExt}.wav`;
+
+    // ST CONFORM CONV
+    // args.push(`-filter_complex`, `[0:a]channelsplit=channel_layout=stereo[left][right]`);
+    // args.push(`-map`, `[left]`);     
+    // args.push(`-map`, `[right]`);     
+    // args.push(`-c:a`, `pcm_s24le`);     
+    // args.push(`-disposition:a`, `+default`);     
+    // args.push(`-metadata`, `title=${pathInfo.filenameNoExt}`);     
+    // args.push(`-metadata:s:a:0`, `title=${pathInfo.filenameNoExt}.L`);     
+    // args.push(`-metadata:s:a:1`, `title=${pathInfo.filenameNoExt}.R`);     
+    // const outputFilename = `${pathInfo.filenameNoExt}.mov`;
+
+
+    // STAYS THE SAME
     const absOutputPath = path.join(outputPath, outputFilename);
     args.push(absOutputPath);
 
@@ -85,11 +107,11 @@ async function executeFfmpegCmd(pathInfo, outputPath) {
     const spawnPromise = new Promise((resolve,reject) => {
         ffmpegProcess.on('close', (code) => {
             if (code === 0) {
-                console.log(`ffmpeg process exited with code ${code}`)
+                console.log(`  >> Successfully converted.\n\n`)
                 resolve();
             } else {
-                console.log(`ffmpeg process exited with code ${code}`)
-                reject(`ffmpeg process exited with code ${code}`);
+                console.log(`  >> Failed to convert. FFmpeg error code: ${code}\n\n`)
+                reject(`  >> Failed to convert. FFmpeg error code: ${code}\n\n`);
             }
         });
     });

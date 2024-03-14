@@ -6,6 +6,13 @@ const inputPathEl = document.querySelector("#inputPath");
 const outputPathEl = document.querySelector("#outputPath");
 const submitBtn = document.querySelector(".convertForm");
 const outputTextarea = document.querySelector('#output');
+let outputValue = '';
+
+const addTextArr = [
+  "CONVERSION STARTED\n", 
+  "\nCONVERSION FINISHED", 
+  'Received interrupt signal. Stopping ffmpeg process..'
+]
 
 // STATE
 const state = {
@@ -20,7 +27,7 @@ const state = {
 document.querySelector('#inFolderBtn').addEventListener('click', async (event) => {
   event.preventDefault();
 
-  console.log("Clicked Input Folder Btn.");
+  // console.log("Clicked Input Folder Btn.");
   await updatePath("inFolder");
   console.log(state);
   updatePage();
@@ -29,7 +36,7 @@ document.querySelector('#inFolderBtn').addEventListener('click', async (event) =
 document.querySelector('#inFileBtn').addEventListener('click', async (event) => {
   event.preventDefault();
 
-  console.log("Clicked Input File Btn.");
+  // console.log("Clicked Input File Btn.");
   await updatePath("inFile");
   console.log(state);
   updatePage();
@@ -38,7 +45,7 @@ document.querySelector('#inFileBtn').addEventListener('click', async (event) => 
 document.querySelector('#outBtn').addEventListener('click', async (event) => {
   event.preventDefault();
   document.querySelector('#outBtn').removeEventListener
-  console.log("Clicked Output Btn.");
+  // console.log("Clicked Output Btn.");
   await updatePath("outFolder");
   console.log(state);
   updatePage();
@@ -115,6 +122,19 @@ ipcRenderer.opStarted((event, data) => {
 
 ipcRenderer.getConsoleMessage((event, consoleMessage) => {
   console.log(consoleMessage.message);
-  outputTextarea.value += '\n' + consoleMessage.message;
+
+  const newLog = consoleMessage.message;
+
+  if (addTextArr.includes(newLog) || 
+      newLog.startsWith("Running conversion for") || 
+      newLog.startsWith(`  >>`) ||
+      newLog.startsWith("---") ||
+      newLog.startsWith("===")
+    ) {
+    outputValue += newLog + '\n';
+    outputTextarea.value = outputValue;
+  } else {
+    outputTextarea.value = outputValue + newLog + '\n\n';
+  }
 })
 
