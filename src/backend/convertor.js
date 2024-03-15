@@ -22,7 +22,7 @@ let ffmpegProcess = null;
 
 // ===== MAIN FUNCTION ===== //
 
-async function ffmpegConverter({ input, output, isFolder }) {
+async function ffmpegConverter({ input, output, isFolder, operationType }) {
     const inputArr = IO.createPathInfoArr(input);
 
     let outputPath = output;
@@ -37,7 +37,7 @@ async function ffmpegConverter({ input, output, isFolder }) {
     // Loops through all input files
     for (let pathInfo of inputArr) {
         try {
-            await executeFfmpegCmd(pathInfo, outputPath);
+            await executeFfmpegCmd(pathInfo, outputPath, operationType);
         } catch (error) {
             console.Error(error);
         }
@@ -54,7 +54,7 @@ async function ffmpegConverter({ input, output, isFolder }) {
 
 
 // FFMPEG COMMAND FUNCTION
-async function executeFfmpegCmd(pathInfo, outputPath) {
+async function executeFfmpegCmd(pathInfo, outputPath, operationType) {
 
     console.log(`Running conversion for: '${pathInfo.filename}'.. \n`);
 
@@ -63,7 +63,7 @@ async function executeFfmpegCmd(pathInfo, outputPath) {
         const ffmpegCmd = paths.FFMPEG_EXEC;
         // const ffmpegCmd = "ffmpeg"    
     
-        const args = ffmpegCmds.createFfmpegArgs(pathInfo, outputPath, type=DEFAULT_TYPE);
+        const args = ffmpegCmds.createFfmpegArgs(pathInfo, outputPath, operationType);
     
         // Run command
         ffmpegProcess = spawn(ffmpegCmd, args);

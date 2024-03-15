@@ -6,6 +6,11 @@ const inputPathEl = document.querySelector("#inputPath");
 const outputPathEl = document.querySelector("#outputPath");
 const submitBtn = document.querySelector(".convertForm");
 const outputTextarea = document.querySelector('#output');
+const settingsBtn = document.querySelector('#settingsBtn');
+const settingsMenu = document.querySelector('#settingsMenu');
+const operationSelection = document.querySelector('.operationSelection');
+const opTitle = document.querySelector('#opTitle');
+
 let outputValue = '';
 
 const addTextArr = [
@@ -18,9 +23,11 @@ const addTextArr = [
 const state = {
   input: "",
   output: "",
-  isFolder: null
+  isFolder: null,
+  operationType: "webm",
+  operationTitle: "WebM Converter"
 }
-
+opTitle.innerHTML = state.operationTitle.toUpperCase();
 
 // EVENT HANDLERS
 
@@ -61,6 +68,36 @@ submitBtn.addEventListener('submit', function handleStartOp(event) {
   // submitBtn.addEventListener('submit', handleStartOp);
 })
 
+settingsBtn.addEventListener('click', (event) => {
+  settingsMenu.classList.toggle("hidden");
+})
+
+operationSelection.addEventListener('submit', async (event) => {
+  event.preventDefault();
+  settingsMenu.classList.toggle("hidden");
+  
+  let selectedOption;
+  let selecterOptionTitle;
+  const radioInputs = document.querySelectorAll('input[type="radio"][name="operation"]');
+  radioInputs.forEach(input => {
+    if (input.checked) {
+      selectedOption = input.id;
+      selecterOptionTitle = input.value;
+    }
+  })
+
+  if (!selectedOption) {
+    selectedOption = state.operationType;
+    selecterOptionTitle = state.operationTitle;
+    opTitle.innerHTML = selecterOptionTitle.toUpperCase();
+  } else {
+    state.operationType = selectedOption;
+    state.operationTitle = selecterOptionTitle;
+    opTitle.innerHTML = selecterOptionTitle.toUpperCase();
+  }
+
+  console.log(state);
+})
 
 // FUNCTIONS
 

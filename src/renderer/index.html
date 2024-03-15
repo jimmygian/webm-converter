@@ -14,9 +14,12 @@
     <header class="header">
         <img src="../../images/other/FA-logo-black.svg" class="header--side logo" id="logo">
         <h1 class="header--center">MP4 to WEBM Converter</h1>
-        <div class="header--side"></div>
+        <button id="settingsBtn" class="header--side header--btn">
+            <img id="settingSvg" class="logo" src="../../images/other/cog.svg" class="header--side logo">
+        </button>
     </header>
     <main class="main">
+        <h2 id="opTitle">WEBM CONVERTOR</h2>
         <form class="convertForm">
             <!-- Drag n Drop Area / Text -->
             <div class="dragDropBox">
@@ -38,10 +41,36 @@
         </form>
         <p id="info"></p>
 
-        <!-- OUTPUT -->
     </main>
+
+    <aside id="settingsMenu" class="settingsContainer hidden">
+        <div class="settings">
+            <form class="operationSelection">
+                <h2>Choose Operation</h2>
+                <div>
+                    <div class="option">
+                        <input type="radio" id="webm" name="operation" value="WebM Converter">
+                        <label for="webm">WebM Converter</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" id="conform" name="operation" value="Conform">
+                        <label for="conform">Conform</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" id="deConform" name="operation" value="De-Conform">
+                        <label for="deConform">De-Conform</label>
+                    </div>
+                </div>
+                <button type="submit">SAVE</button>
+            </form>
+        </div>
+    </aside>
+
+    <!-- OUTPUT -->
     <textarea readonly scrollTop class="output" name="output" id="output" cols="30" rows="10"></textarea>
     
+
+
 </body>
 <script src="./js/renderer.js"></script>
 </html>
