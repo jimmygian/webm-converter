@@ -40,14 +40,6 @@ async function webmConvertor({ input, output, isFolder }) {
         }
     }
 
-    for (let pathInfo of inputArr) {
-        try {
-            await executeFfmpegCmd(pathInfo, outputPath);
-        } catch (error) {
-            console.Error(error);
-        }
-    }
-
     console.log("\nCONVERSION FINISHED")
     console.log("===================\n\n\n")
 }

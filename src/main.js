@@ -79,13 +79,9 @@ const createWindow = () => {
   if (isDev) {
     mainWindow.webContents.openDevTools();
   }
-  // registerIPCMainHandlers();
 
   mainWindow.on('closed', () => {
-    // removeIPCMainHandlers(); 
     mainWindow = null;
-    // console.log("HERE!!")
-    // console.log("Main:", mainWindow)
   })
 
   mainWindow.setMinimumSize(500, 900);
@@ -151,6 +147,7 @@ function registerIPCMainHandlers() {
 
     // Try to convert
     try {
+      console.log("RUNNING CONVERTION!!")
       webmConvertor(data);
     } catch (error) {
       console.error(error)
