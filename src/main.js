@@ -16,7 +16,7 @@ const { app, BrowserWindow, ipcMain, dialog, Menu } = require('electron');
 const path = require('node:path');
 const paths = require('./utils/paths');
 const fs = require('fs');
-const webmConvertor = require('./backend/convertor');
+const ffmpegConverter = require('./backend/convertor');
 let mainWindow;
 
 
@@ -148,7 +148,7 @@ function registerIPCMainHandlers() {
     // Try to convert
     try {
       console.log("RUNNING CONVERTION!!")
-      webmConvertor(data);
+      ffmpegConverter(data);
     } catch (error) {
       console.error(error)
     }

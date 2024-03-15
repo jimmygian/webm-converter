@@ -14,11 +14,14 @@ const fs = require('fs');
 // CONSTANTS
 const { FFMPEG_WEBM_VIDEO_EXTENSIONS } = require('./constants.js')
 
-// Creates an arr of objects that contain path Info for all path's files
+
+
+/** ==== EXPORTED FUNCTION ====
+ * Returns an arr of object(s) that contain path Info for all path's files 
+ * */
 function createPathInfoArr(userPath) {
   const arr = [];
 
-  // try {
   // Gets statistics from file path using fs.statSync([path])
   const stats = fs.statSync(userPath);
 
@@ -47,12 +50,11 @@ function createPathInfoArr(userPath) {
       throw new Error(`On 'convertor.js' -> createPathInfoArr(): Array does not contain any valid file paths`)
     }
   }
-  
-  // } catch (error) {
-  //   ipcMain.handle('get-message', () => error);
-  //   throw new Error(`On 'convertor.js' -> createPathInfoArr(): Failed to get directory stats for path '${userPath}'`, error)
-  // }
 }
+
+
+
+// Helper //
 
 // Accepts 1 absolute path - returns an object of path related info
 function getPathInfo(userPath, fileName = null) {
@@ -94,7 +96,8 @@ function getPathInfo(userPath, fileName = null) {
   return pathInfo;
 }
 
+
+
 module.exports = {
   createPathInfoArr,
-  getPathInfo,
 }
