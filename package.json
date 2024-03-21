@@ -46,13 +46,13 @@
       "target": [
         "dmg"
       ],
-      "icon": "images/icons/FA_webm.icns"
+      "icon": "images/icons/FA_red.icns"
     },
     "win": {
       "target": [
         "msi"
       ],
-      "icon": "images/icons/FA_webm.ico"
+      "icon": "images/icons/FA_red.ico"
     }
   }
 }
