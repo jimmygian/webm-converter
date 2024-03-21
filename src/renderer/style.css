@@ -1,111 +1,172 @@
 :root {
-    --bg-body-dark: rgb(97, 90, 111);
-    --bg-body-light: rgb(242, 242, 242);
-    --text-light: rgb(26, 26, 26);
-    --orange: rgb(253, 189, 70);
+  --bg-body-dark: rgb(97, 90, 111);
+  --bg-body-light: rgb(242, 242, 242);
+  --text-light: rgb(26, 26, 26);
+  --orange: rgb(253, 189, 70);
+  --primary-red: rgba(249, 66, 58, 1);
+  --primary-dark-grey: rgba(45, 41, 38, 1);
+  --secondary-grey: rgba(128, 128, 128, 1);
+  --primary-white: rgba(249, 249, 249, 1);
 }
 
+@font-face {
+  font-family: "Poppins-Regular";
+  src: url("../../font/poppins/Poppins-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+}
 
-button:hover,
-button:focus {
-    opacity: 80%;
-    cursor: pointer;
+@font-face {
+  font-family: "Poppins-Semibold";
+  src: url("../../font/poppins/Poppins-SemiBold.woff2") format("woff2");
+  font-weight: 600;
+  font-style: normal;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+button:hover {
+  opacity: 70%;
+  cursor: pointer;
 }
 button:active {
-    background-color: bisque;
+  opacity: 100%;
 }
 
 body {
-    position: relative;
-    margin: 0;
-    padding: 0;
-    background-color: var(--bg-body-light);
-    color: var(--text-light);
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
+  position: relative;
+  background-color: var(--primary-white);
+  color: var(--text-light);
+  font-family: "Poppins-Regular", sans-serif;
+  min-height: 100vh;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
 }
 
+h1,
+h2,
+h3,
+h4 {
+  font-family: "Poppins-Semibold", sans-serif;
+  font-weight: 600;
+}
 
 /* Header */
 
 .header {
-    background-color: rgb(64, 59, 73, 0.1);
-    box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.2);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 2rem;
-    padding: 0.5rem 0.4rem;
-}
-
-.header--side {
-    width: 10%;
+  background-color: var(--primary-dark-grey);
+  color: var(--primary-white);
+  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 1.5rem;
+  height: 4rem;
 }
 
 .header--center {
-    text-align: center;
-    max-width: 70%;
-    font-size: 100%;
+  text-align: center;
+  max-width: 70%;
+  font-size: 100%;
 }
 
 .logo {
-    width: 20px;
-    margin-left: 1.5rem;
+  height: 1.5rem;
+  width: auto;
+  object-fit: contain;
 }
 
 .header--btn {
-    outline: none;
-    border: none;
-    background: none;
+  outline: none;
+  border: none;
+  background: none;
+  /* hide btn temporarily */
+  visibility: hidden;
+  pointer-events: none;
 }
-
 
 /* Main */
 
 .main {
-    /* background-color: brown; */
-    height: 50vh;
-    display: flex;
-    flex-flow: column;
-    justify-content: space-between;
-    align-items: center;
-    position: relative;
+  height: 100%;
+  display: flex;
+  flex-flow: column;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  padding-top: 2rem;
+}
+
+.main-title {
+  text-align: center;
+}
+.form-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+#opTitle {
+  font-size: 1rem;
+  margin-bottom: 1rem;
 }
 
 .convertForm {
-    width: 80%;
-    height: 50%;
-    /* border: 1px solid black; */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
+  width: 80%;
+  max-width: 48rem;
+  height: 50%;
+  min-height: fit-content;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 2rem;
+}
 
+.buttons-container {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  align-items: center;
 }
 
 .userSelection {
-    /* border: 1px solid orange; */
-    width: 100%;
-    display: flex;
-    /* flex-direction: column; */
-    justify-content: space-between;
-    /* padding: 0.5rem; */
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
 }
 
 .userSelection button {
-    width: 8rem;
-    height: 2rem;
-    /* flex-grow: 1; */
-    background-color: var(--orange);
-    border: 0;
-    border-radius: 7px 0px 0px 7px;
+  width: 8rem;
+  height: 2rem;
+  font-size: 1rem;
+  border-radius: 30px;
+  background-color: var(--primary-white);
+  color: var(--primary-dark-grey);
+  border: 1px solid var(--primary-dark-grey);
+}
+
+.userSelection button:active {
+  border-color: var(--primary-red);
+  color: var(--primary-red);
 }
 
 .userSelection input {
-    /* width: 8rem;
-    height: 2rem; */
-    flex-grow: 1;
-    border: 0;
-    box-shadow: 0px 2px 1px rgba(0, 0, 0, 0.1);
+  flex-grow: 1;
+  border: 0;
+  box-shadow: 0px 2px 1px rgba(0, 0, 0, 0.1);
+  padding: 0.25rem 0.5rem;
+}
+.userSelection input:focus {
+  outline: none;
 }
 
 /* ============== */
@@ -120,29 +181,31 @@ body {
     font-size: 10px;
   } */
 
-
 .dragDropBox {
-    background-color: rgba(145, 145, 145, 0.3);
-    height: 10rem;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
-    /* padding: 0.5rem; */
-    margin-bottom: 2rem;
-    border-radius: 10px;
+  height: 10rem;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-radius: 10px;
+  gap: 1rem;
 }
 
 .dragDropBox--item {
-    border: 0;
-    /* visibility: hidden; */
-    opacity: 100;
-    /* display: none; */
-    flex-grow: 1;
-    align-self: center;
-    justify-self: center;
-    width: 100%;
-    height: 100%;
+  border: 0;
+  /* visibility: hidden; */
+  /* display: none; */
+  align-self: center;
+  justify-self: center;
+  width: 100%;
+  height: 2rem;
+  font-size: 1rem;
+  border-radius: 30px;
+  background-color: var(--primary-white);
+  color: var(--primary-dark-grey);
+  border: 1px solid var(--primary-dark-grey);
+  max-width: 8rem;
+  min-width: fit-content;
 }
 
 /* .dragDropBox:hover {
@@ -150,96 +213,97 @@ body {
 } */
 
 .dragDropBox:hover .dragDropBox--item {
-    visibility: visible;
-    opacity: 100;
+  visibility: visible;
 }
 
-.dragDropBox--item:focus, 
+.dragDropBox--item:focus,
 .dragDropBox--item:hover {
-    visibility: visible;
-    opacity: 100;
-    background-color: rgba(255, 255, 255, 0.2);
+  visibility: visible;
+  opacity: 0.7;
+}
+.dragDropBox--item:active {
+  color: var(--primary-red);
+  border-color: var(--primary-red);
 }
 
 .dragDropBox--input {
-    flex-grow: 1;
-    padding: 0.25rem;
-    border: 0;
-    box-shadow: 0px 2px 1px rgba(0, 0, 0, 0.1);
-    border-radius: 0px 0px 5px 5px ;
+  padding: 0.25rem 0.5rem;
+  border: 0;
+  box-shadow: 0px 2px 1px rgba(0, 0, 0, 0.1);
+  height: 2rem;
 }
-
+.dragDropBox--input:focus {
+  outline: none;
+}
 
 /* BUTTON */
 
 .convertBtn {
-    padding: 0.5rem 2rem;
-    margin: 1rem;
-    margin-top: 3rem;
-    border: 0;
-    border-radius: 5px;
-    background-color: var(--orange);
-    color: var(--text-light);
-    letter-spacing: 0.1rem;
-    font-weight: 100;
+  padding: 1rem 4rem;
+  border: 0;
+  font-size: 1rem;
+  border-radius: 50px;
+  background-color: var(--primary-red);
+  color: var(--primary-white);
 }
 
 /* OUTPUT TEXTAREA */
 .output {
-    background-color: rgb(235, 235, 235);
-    outline: none;
-    margin: 0;
-    padding: 0.5rem;
-    border: 0;
-    width: calc(100% - 1rem);
-    height: 13rem;
-    resize: none;
-    text-wrap: wrap;
-    font-family: Arial, Helvetica, sans-serif;
-    letter-spacing: 1px;
+  background-color: var(--primary-white);
+  color: var(--primary-dark-grey);
+  outline: none;
+  margin: 0;
+  padding: 1.5rem;
+  border: 0;
+  border-top: 1px solid var(--secondary-grey);
+  width: 100%;
+  height: 13rem;
+  resize: none;
+  text-wrap: wrap;
+  font-family: "Poppins-Regular", sans-serif;
+  letter-spacing: 1px;
 }
-
 
 /* SETTINGS */
 .settingsContainer {
-    position: absolute;
-    top: 3.55rem;
-    /* position: relative; */
-    height: 90vh;
-    width: 100vw;
-    overflow: hidden;
+  position: absolute;
+  top: 3.55rem;
+  /* position: relative; */
+  height: 90vh;
+  width: 100vw;
+  overflow: hidden;
 }
 .settings {
-    position: absolute;
-    display: flex;
-    flex-flow: column;
-    top: 0;
-    right: 0;
-    height: 33%;
-    width: 100%;
-    background-color: rgba(0, 0, 0, 0.1);
-    backdrop-filter: blur(6px);
-    animation: slideFromLeft 0.5s ease forwards;
+  position: absolute;
+  display: flex;
+  flex-flow: column;
+  top: 0;
+  right: 0;
+  height: 33%;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(6px);
+  animation: slideFromLeft 0.5s ease forwards;
 }
 
 .operationSelection {
-    display: flex;
-    flex-flow: column;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .hidden {
-    display: none;
+  display: none;
 }
 
 @keyframes slideFromLeft {
-    0% {
-        opacity: 0;
-        transform: translateY(-100px);
-    }
-    100% {
-        opacity: 1;
-        transform: translateY(0px);
-    }
+  0% {
+    opacity: 0;
+    transform: translateY(-100px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0px);
+  }
 }
