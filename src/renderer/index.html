@@ -1,76 +1,122 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <!-- This is needed for Electron Apps -->
     <meta http-equiv="Content-Security-Policy" content="script-src 'self'" />
 
-    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="./style.css" />
     <title>Forever Audio: Webm Converter</title>
-</head>
-<body>
+  </head>
+
+  <body>
     <header class="header">
-        <img src="../../images/other/FA-logo-black.svg" class="header--side logo" id="logo">
-        <h1 class="header--center">MP4 to WEBM Converter</h1>
-        <button id="settingsBtn" class="header--side header--btn">
-            <img id="settingSvg" class="logo" src="../../images/other/cog.svg" class="header--side logo">
-        </button>
+      <img
+        src="../../images/other/FA-logo-white.svg"
+        class="header--side logo"
+        id="logo"
+      />
+      <!-- <h1 class="header--center">MP4 to WEBM Converter</h1> -->
+      <button id="settingsBtn" class="header--side header--btn">
+        <img
+          id="settingSvg"
+          class="logo"
+          src="../../images/other/cog.svg"
+          class="header--side logo"
+        />
+      </button>
     </header>
     <main class="main">
+      <h1 class="main-title">MP4 to WEBM Converter</h1>
+      <div class="form-container">
         <h2 id="opTitle">WEBM CONVERTOR</h2>
         <form class="convertForm">
-            <!-- Drag n Drop Area / Text -->
-            <div class="dragDropBox">
-                <!-- Clickable divs (hidden in css file - visible only when mouse is over dragDropBox) -->
-                <button id="inFileBtn" class="dragDropBox--item">
-                    <p>Select File</p>
-                </button>
-                <button id="inFolderBtn" class="dragDropBox--item">
-                    <p>Select Folder</p>
-                </button>
-                <input readonly type="text" class="dragDropBox--input" id="inputPath" placeholder=" Select Input folder">
+          <!-- Drag n Drop Area / Text -->
+          <div class="dragDropBox">
+            <!-- Clickable divs (hidden in css file - visible only when mouse is over dragDropBox) -->
+            <div class="buttons-container">
+              <button id="inFileBtn" class="dragDropBox--item">
+                <p>Select File</p>
+              </button>
+              <p>or</p>
+              <button id="inFolderBtn" class="dragDropBox--item">
+                <p>Select Folder</p>
+              </button>
             </div>
+            <input
+              readonly
+              type="text"
+              class="dragDropBox--input"
+              id="inputPath"
+              placeholder="Select Input folder"
+            />
+          </div>
 
-            <div class="userSelection">
-                <button id="outBtn">Output</button> 
-                <input readonly type="text" id="outputPath" placeholder=" Same as input">
-            </div>
-            <button class="convertBtn" type="submit">CONVERT</button>
+          <div class="userSelection">
+            <button id="outBtn">Output</button>
+            <input
+              readonly
+              type="text"
+              id="outputPath"
+              placeholder=" Same as input"
+            />
+          </div>
+          <button class="convertBtn" type="submit">CONVERT</button>
         </form>
-        <p id="info"></p>
-
+      </div>
+      <p id="info"></p>
     </main>
 
     <aside id="settingsMenu" class="settingsContainer hidden">
-        <div class="settings">
-            <form class="operationSelection">
-                <h2>Choose Operation</h2>
-                <div>
-                    <div class="option">
-                        <input type="radio" id="webm" name="operation" value="WebM Converter">
-                        <label for="webm">WebM Converter</label>
-                    </div>
-                    <div class="option">
-                        <input type="radio" id="conform" name="operation" value="Conform">
-                        <label for="conform">Conform</label>
-                    </div>
-                    <div class="option">
-                        <input type="radio" id="deConform" name="operation" value="De-Conform">
-                        <label for="deConform">De-Conform</label>
-                    </div>
-                </div>
-                <button type="submit">SAVE</button>
-            </form>
-        </div>
+      <div class="settings">
+        <form class="operationSelection">
+          <h2>Choose Operation</h2>
+          <div>
+            <div class="option">
+              <input
+                type="radio"
+                id="webm"
+                name="operation"
+                value="WebM Converter"
+              />
+              <label for="webm">WebM Converter</label>
+            </div>
+            <div class="option">
+              <input
+                type="radio"
+                id="conform"
+                name="operation"
+                value="Conform"
+              />
+              <label for="conform">Conform</label>
+            </div>
+            <div class="option">
+              <input
+                type="radio"
+                id="deConform"
+                name="operation"
+                value="De-Conform"
+              />
+              <label for="deConform">De-Conform</label>
+            </div>
+          </div>
+          <button type="submit">SAVE</button>
+        </form>
+      </div>
     </aside>
 
     <!-- OUTPUT -->
-    <textarea readonly scrollTop class="output" name="output" id="output" cols="30" rows="10"></textarea>
-    
-
-
-</body>
-<script src="./js/renderer.js"></script>
+    <textarea
+      readonly
+      scrollTop
+      class="output"
+      name="output"
+      id="output"
+      cols="30"
+      rows="10"
+    ></textarea>
+  </body>
+  <script src="./js/renderer.js"></script>
 </html>
