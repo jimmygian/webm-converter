@@ -2,7 +2,8 @@ const path = require('path');
 
 // Converts video files to webm video format
 const convToWebm = [
-  `-deadline`, `best`, 
+  `-deadline`, `realtime`, 
+  `-cpu-used`, `4`, // 0 to 16 - lower values faster
   `-c:v`, `libvpx-vp9`, 
   `-c:a`, `libopus`
 ];

@@ -263,6 +263,7 @@ h4 {
   text-wrap: wrap;
   font-family: "Poppins-Regular", sans-serif;font-size: small;
   letter-spacing: 1px;
+  overflow-y: scroll;
 }
 
 .sectionLine {

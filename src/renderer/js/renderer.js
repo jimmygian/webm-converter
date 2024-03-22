@@ -170,8 +170,12 @@ ipcRenderer.getConsoleMessage((event, consoleMessage) => {
     ) {
     outputValue += newLog + '\n';
     outputTextarea.value = outputValue;
+    // scroll to bottom
+    outputTextarea.scrollTop = outputTextarea.scrollHeight;
   } else {
     outputTextarea.value = outputValue + newLog + '\n\n';
+    // scroll to bottom
+    // outputTextarea.scrollTop = outputTextarea.scrollHeight;
   }
 })
 
