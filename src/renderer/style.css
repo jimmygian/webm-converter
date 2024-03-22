@@ -256,13 +256,21 @@ h4 {
   margin: 0;
   padding: 1.5rem;
   border: 0;
-  border-top: 1px solid var(--secondary-grey);
+  /* border-top: 1px solid var(--secondary-grey); */
   width: 100%;
   height: 13rem;
   resize: none;
   text-wrap: wrap;
-  font-family: "Poppins-Regular", sans-serif;
+  font-family: "Poppins-Regular", sans-serif;font-size: small;
   letter-spacing: 1px;
+}
+
+.sectionLine {
+  width: 67%;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  font-size: x-small;
+  color: var(--secondary-grey);
+  opacity: 70%;
 }
 
 /* SETTINGS */
@@ -297,6 +305,11 @@ h4 {
 .hidden {
   display: none;
 }
+
+.default-cursor {
+  cursor: default;
+}
+
 
 @keyframes slideFromLeft {
   0% {

@@ -47,28 +47,33 @@
             </div>
             <input
               readonly
+              tabindex="-1"
               type="text"
-              class="dragDropBox--input"
+              class="dragDropBox--input default-cursor"
               id="inputPath"
-              placeholder="Select Input folder"
+              placeholder="Select Input Path above..."
             />
           </div>
 
           <div class="userSelection">
-            <button id="outBtn">Output</button>
+            <button id="outBtn">Output Path</button>
             <input
               readonly
               type="text"
               id="outputPath"
               placeholder=" Same as input"
+              tabindex="-1"
+              class="default-cursor"
             />
           </div>
           <button class="convertBtn" type="submit">CONVERT</button>
         </form>
       </div>
       <p id="info"></p>
+      <div class="sectionLine">Ffmpeg Log:</div>
     </main>
 
+    <!-- SETTINGS MENU -->
     <aside id="settingsMenu" class="settingsContainer hidden">
       <div class="settings">
         <form class="operationSelection">
@@ -103,6 +108,7 @@
             </div>
           </div>
           <button type="submit">SAVE</button>
+          <!-- //// -->
         </form>
       </div>
     </aside>
