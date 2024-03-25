@@ -29,5 +29,6 @@ contextBridge.exposeInMainWorld('ipcRenderer', {
     getFile: () => ipcRenderer.invoke('get-path', 'openFile'),
     startOperation: (data) => ipcRenderer.send('start-operation', data),
     getConsoleMessage: (func) => ipcRenderer.on('console-message', (event, consoleMessage) => func(event, consoleMessage)),
-    opStarted: (func) => ipcRenderer.on('op-started', (event, ...args) => func(event,...args))
+    opStarted: (func) => ipcRenderer.on('op-started', (event, ...args) => func(event,...args)),
+    opInProgress: (func) => ipcRenderer.on('op-in-progress', (event, bool) => func(event, bool))
 });

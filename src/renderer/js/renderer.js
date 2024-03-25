@@ -4,12 +4,13 @@ console.log("Hello from Renderer - in console")
 // SELECTORS
 const inputPathEl = document.querySelector("#inputPath");
 const outputPathEl = document.querySelector("#outputPath");
-const submitBtn = document.querySelector(".convertForm");
+const submitForm = document.querySelector(".convertForm");
 const outputTextarea = document.querySelector('#output');
 const settingsBtn = document.querySelector('#settingsBtn');
 const settingsMenu = document.querySelector('#settingsMenu');
 const operationSelection = document.querySelector('.operationSelection');
 const opTitle = document.querySelector('#opTitle');
+const convertBtn = document.querySelector('.convertBtn');
 
 let outputValue = '';
 
@@ -58,14 +59,14 @@ document.querySelector('#outBtn').addEventListener('click', async (event) => {
   updatePage();
 })
 
-submitBtn.addEventListener('submit', function handleStartOp(event) {
+submitForm.addEventListener('submit', function handleStartOp(event) {
   event.preventDefault();
   console.log("RAN")
 
   ipcRenderer.startOperation(state);
 
-  // submitBtn.removeEventListener('submit', handleStartOp);
-  // submitBtn.addEventListener('submit', handleStartOp);
+  // submitForm.removeEventListener('submit', handleStartOp);
+  // submitForm.addEventListener('submit', handleStartOp);
 })
 
 settingsBtn.addEventListener('click', (event) => {
@@ -179,3 +180,14 @@ ipcRenderer.getConsoleMessage((event, consoleMessage) => {
   }
 })
 
+ipcRenderer.opInProgress((event, bool) => {
+  if (bool) {
+    convertBtn.innerText = "In Progress..."
+    convertBtn.disabled = true;
+    convertBtn.classList.add('inProgress')
+  } else {
+    convertBtn.innerText = "CONVERT"
+    convertBtn.disabled = false;
+    convertBtn.classList.remove('inProgress')
+  }
+})

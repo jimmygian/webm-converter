@@ -132,7 +132,9 @@ function registerIPCMainHandlers() {
     }
   })
 
-  ipcMain.on('start-operation', (event, data) => {
+  ipcMain.on('start-operation', async (event, data) => {
+
+    event.sender.send('op-in-progress', true);
 
     // Log info to renderer for debugging purposes
     console.log("PATHS FFMPEG EXEC:", paths.FFMPEG_EXEC)
@@ -144,15 +146,16 @@ function registerIPCMainHandlers() {
       console.log('ffmpegPath has execute permission:', !err)
     });
 
-    // Send 'op-started' signal to renderer
-    event.sender.send('op-started', "Conversion Started!");
+
 
     // Try to convert
     try {
       console.log("RUNNING CONVERTION!!")
-      ffmpegConverter(data);
+      await ffmpegConverter(data);
+      event.sender.send('op-in-progress', false);
     } catch (error) {
       console.error(error)
+      event.sender.send('op-in-progress', false);
     }
   })
 }

@@ -97,7 +97,44 @@ function getPathInfo(userPath, fileName = null) {
 }
 
 
+function getFolderPath(absPath) {
+  
+  let isFolder;
+  try {
+    const stats = fs.statSync(absPath);
+
+    if (stats.isFile()) {
+      isFolder = false;
+    } else if (stats.isDirectory) {
+      isFolder = true;
+    } else {
+      isFolder = null;
+    }
+  } catch (err) {
+      console.error("Invalid Path,", err)
+      return null;
+  }
+
+  if (isFolder) {
+    try {
+      fs.accessSync(absPath, fs.constants.F_OK);
+      return absPath;
+    } catch (err) {
+      return null;
+    }
+  } else {
+    try {
+      const dirPath = path.dirname(absPath)
+      fs.accessSync(dirPath, fs.constants.F_OK);
+      return dirPath;
+    } catch (err) {
+      return null;
+    }
+  }
+}
+
 
 module.exports = {
   createPathInfoArr,
+  getFolderPath,
 }

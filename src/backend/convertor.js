@@ -24,6 +24,12 @@ let ffmpegProcess = null;
 
 async function ffmpegConverter({ input, output, isFolder, operationType }) {
     const inputArr = IO.createPathInfoArr(input);
+    console.log("INPUT:", IO.getFolderPath(input));
+    console.log("OUTPUT:",IO.getFolderPath(output));
+    if ((IO.getFolderPath(input) === IO.getFolderPath(output)) || !IO.getFolderPath(input) || !IO.getFolderPath(output)) {
+        console.error("Please select valid I/O paths. Current paths are either the same, or one of them is not a path to a valid folder.");
+        return;
+    }
 
     let outputPath = output;
     if (!output) {

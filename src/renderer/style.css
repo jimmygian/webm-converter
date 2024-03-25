@@ -138,6 +138,15 @@ h4 {
   align-items: center;
 }
 
+.inProgress {
+  background-color: gray !important;
+  cursor: default;
+}
+.inProgress:hover {
+  background-color: gray;
+  cursor: wait;
+}
+
 .userSelection {
   width: 100%;
   display: flex;
