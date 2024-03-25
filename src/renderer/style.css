@@ -85,8 +85,8 @@ h4 {
   border: none;
   background: none;
   /* hide btn temporarily */
-  visibility: hidden;
-  pointer-events: none;
+  /* visibility: hidden; */
+  /* pointer-events: none; */
 }
 
 /* Main */
