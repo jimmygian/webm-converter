@@ -2,7 +2,8 @@ const path = require('path');
 
 // Converts video files to webm video format
 const convToWebm = [
-  `-deadline`, `best`, 
+  `-deadline`, `realtime`, 
+  `-cpu-used`, `4`, // 0 to 16 - lower values faster
   `-c:v`, `libvpx-vp9`, 
   `-c:a`, `libopus`
 ];
@@ -23,6 +24,25 @@ const deConform = [
   `-c:a`, `pcm_s24le`
 ];
 
+// Restores conformed .mov files to stereo .wav files
+const DNxHD = [
+  `-c:v`, `dnxhd`, 
+  `-profile:v`, `dnxhd`, /* Specifies DNxHD profile will be used */
+  `-b:v`, `36M`, /* Profile 36 (36Megabits per sec) */
+  `-c:a`, `pcm_s16le`, 
+  /** -vf: VIDEO FILTERS
+   * Video filters are applied before convertion so that the input
+   * video can be compatible with the specified convertion.
+   * scale= This part of the filter chain resizes the video to fit within a 1920x1080 frame
+   *        while maintaining the original aspect ratio.
+   * pad filter:
+   *        After scaling the video, it may not perfectly fit into a 1920x1080
+   *        frame while maintaining the original ratio. This part of the chain
+   *        pads the video with black bars if necessary to make the final frame size.
+   */
+  `-vf`, `scale=1920:1080:force_original_aspect_ratio=decrease, pad=1920:1080:(ow-iw)/2:(oh-ih)/2, format=yuv422p`,
+];
+
 
 // EXPORTED FUNCTION //
 
@@ -37,6 +57,10 @@ const createFfmpegArgs = (pathInfo, outputPath, type) => {
     case "webm":
       args.push(...convToWebm);
       outputFilename = `${pathInfo.filenameNoExt}.webm`;
+      break;
+    case "DNxHD":
+      args.push(...DNxHD);
+      outputFilename = `${pathInfo.filenameNoExt}.mov`;
       break;
     case "deConform":
       args.push(...deConform);

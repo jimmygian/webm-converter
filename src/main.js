@@ -111,7 +111,9 @@ app.on('window-all-closed', () => {
 // })
 
 app.on('activate', () => {
-  createWindow();
+  if (mainWindow === null) {
+    createWindow();
+  }
 })
 
 
