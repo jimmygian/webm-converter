@@ -1,8 +1,8 @@
 {
-  "name": "fa-webm-convertor-1.0.0",
+  "name": "fa-convertor-1.0.0",
   "version": "1.0.0",
   "license": "MIT",
-  "description": "An app that converts files to WEBM format",
+  "description": "An app that converts files to specified formats.",
   "author": "Dimitris Giannoulis",
   "main": "./src/main.js",
   "scripts": {

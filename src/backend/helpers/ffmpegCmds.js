@@ -24,6 +24,13 @@ const deConform = [
   `-c:a`, `pcm_s24le`
 ];
 
+// Covnerts files to WAV 48kHz 24bit
+const toWav = [
+  `-vn`, /* Discards video */
+  `-ar`, `48000`, 
+  `-acodec`, `pcm_s24le`,
+];
+
 // Restores conformed .mov files to stereo .wav files
 const DNxHD = [
   `-c:v`, `dnxhd`, 
@@ -60,7 +67,7 @@ const createFfmpegArgs = (pathInfo, outputPath, type) => {
       break;
     case "DNxHD":
       args.push(...DNxHD);
-      outputFilename = `${pathInfo.filenameNoExt}.mov`;
+      outputFilename = `${pathInfo.filenameNoExt}_DNx36.mov`;
       break;
     case "deConform":
       args.push(...deConform);
@@ -72,6 +79,10 @@ const createFfmpegArgs = (pathInfo, outputPath, type) => {
       args.push(`-metadata:s:a:0`, `title=${pathInfo.filenameNoExt}.L`);     
       args.push(`-metadata:s:a:1`, `title=${pathInfo.filenameNoExt}.R`);     
       outputFilename = `${pathInfo.filenameNoExt}.mov`;
+      break;
+    case "wav":
+      args.push(...toWav);
+      outputFilename = `${pathInfo.filenameNoExt}.wav`;
       break;
   }
 

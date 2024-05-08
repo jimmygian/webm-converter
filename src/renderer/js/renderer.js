@@ -25,8 +25,8 @@ const state = {
   input: "",
   output: "",
   isFolder: null,
-  operationType: "webm",
-  operationTitle: "WebM Converter"
+  operationType: "DNxHD",
+  operationTitle: "DNxHD Converter"
 }
 opTitle.innerHTML = state.operationTitle.toUpperCase();
 
